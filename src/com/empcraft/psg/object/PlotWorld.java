@@ -29,18 +29,15 @@ public abstract class PlotWorld {
      * @param config Configuration Section
      */
     public void saveConfiguration(final ConfigurationSection config) {
-        HashMap<String, Object> options = new HashMap<>();        
+        final HashMap<String, Object> options = new HashMap<>();
         final ConfigurationNode[] settings = getSettingNodes();
         /*
          * Saving generator specific settings
          */
         for (final ConfigurationNode setting : settings) {
-            System.out.print(setting.getConstant() +" : " + setting.getValue());
+            System.out.print(setting.getConstant() + " : " + setting.getValue());
             options.put(setting.getConstant(), setting.getType().parseObject(setting.getValue()));
         }
-        
-        System.out.print("DONE!");
-        
         for (final String option : options.keySet()) {
             if (!config.contains(option)) {
                 config.set(option, options.get(option));

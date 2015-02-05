@@ -1,19 +1,17 @@
 package com.empcraft.psg.object;
 
-
-
 public class BlockLoc {
     public int x;
     public int y;
     public int z;
-    
-    public BlockLoc(int x, int y, int z) {
+
+    public BlockLoc(final int x, final int y, final int z) {
         this.x = x;
         this.y = y;
         this.z = z;
-        
+
     }
-    
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -23,9 +21,9 @@ public class BlockLoc {
         result = (prime * result) + this.z;
         return result;
     }
-    
+
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -35,8 +33,8 @@ public class BlockLoc {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        BlockLoc other = (BlockLoc) obj;
+        final BlockLoc other = (BlockLoc) obj;
         return ((this.x == other.x) && (this.y == other.y) && (this.z == other.z));
     }
-    
+
 }

@@ -267,7 +267,7 @@ public final class CompoundTag extends Tag {
         if (tag instanceof ListTag) {
             return (ListTag) tag;
         } else {
-            return new ListTag(key, StringTag.class, Collections.<Tag>emptyList());
+            return new ListTag(key, StringTag.class, Collections.<Tag> emptyList());
         }
     }
 

@@ -52,7 +52,7 @@ public class HybridGen extends ChunkGenerator {
      * plotworld object
      */
     public HybridPlotWorld plotworld = null;
-    
+
     /**
      * Some generator specific variables (implementation dependent)
      */
@@ -87,14 +87,16 @@ public class HybridGen extends ChunkGenerator {
      */
     public HybridGen(final String world) {
         this.plotworld = new HybridPlotWorld(world);
-        String root = "worlds."+world;
-        Main.config.createSection(root);
-        ConfigurationSection section = Main.config.getConfigurationSection(root);
+        final String root = "worlds." + world;
+        if (!Main.config.contains(root)) {
+            Main.config.createSection(root);
+        }
+        final ConfigurationSection section = Main.config.getConfigurationSection(root);
         this.plotworld.saveConfiguration(section);
         this.plotworld.loadDefaultConfiguration(section);
         Main.save();
         Main.worlds.put(world, this.plotworld);
-        
+
         this.populator = Arrays.asList((BlockPopulator) new HybridPop(this.plotworld));
         this.plotsize = this.plotworld.PLOT_WIDTH;
         this.pathsize = this.plotworld.ROAD_WIDTH;
@@ -110,7 +112,7 @@ public class HybridGen extends ChunkGenerator {
         for (int i = 0; i < this.plotworld.MAIN_BLOCK.length; i++) {
             this.filling[i] = this.plotworld.MAIN_BLOCK[i].id;
         }
-        if (this.filling.length > 1 || this.plotfloors.length > 1) {
+        if ((this.filling.length > 1) || (this.plotfloors.length > 1)) {
             this.doState = true;
         }
         this.wallheight = this.plotworld.WALL_HEIGHT;
@@ -124,13 +126,11 @@ public class HybridGen extends ChunkGenerator {
         this.pathWidthUpper = (short) (this.pathWidthLower + this.plotsize + 1);
         this.biome = this.plotworld.BIOME;
         try {
-            maxY = Bukkit.getWorld(world).getMaxHeight();
-        }
-        catch (NullPointerException e) {
-            maxY = 256;
+            this.maxY = Bukkit.getWorld(world).getMaxHeight();
+        } catch (final NullPointerException e) {
+            this.maxY = 256;
         }
     }
-
 
     /**
      * Allow spawning everywhere
@@ -157,19 +157,20 @@ public class HybridGen extends ChunkGenerator {
         final long r = ((nextLong() >>> 32) * n) >> 32;
         return (int) r;
     }
-    private void setBlock(short[][] result, int x, int y, int z, short[] blkids) {
+
+    private void setBlock(final short[][] result, final int x, final int y, final int z, final short[] blkids) {
         if (blkids.length == 1) {
             setBlock(result, x, y, z, blkids[0]);
-        }
-        else {
+        } else {
             final int i = random(blkids.length);
             setBlock(result, x, y, z, blkids[i]);
         }
     }
+
     /**
      * Standard setblock method for world generation
      */
-    private void setBlock(short[][] result, int x, int y, int z, short blkid) {
+    private void setBlock(final short[][] result, final int x, final int y, final int z, final short blkid) {
         if (result[y >> 4] == null) {
             result[y >> 4] = new short[4096];
         }
@@ -181,6 +182,11 @@ public class HybridGen extends ChunkGenerator {
      */
     @Override
     public List<BlockPopulator> getDefaultPopulators(final World world) {
+        world.setSpawnFlags(false, false);
+        world.setAmbientSpawnLimit(0);
+        world.setAnimalSpawnLimit(0);
+        world.setMonsterSpawnLimit(0);
+        world.setWaterAnimalSpawnLimit(0);
         return this.populator;
     }
 
@@ -197,25 +203,25 @@ public class HybridGen extends ChunkGenerator {
      * generator
      */
     @Override
-    public short[][] generateExtBlockSections(final World world, final Random random, int cx, int cz, final BiomeGrid biomes) {
-        if (doState) {
+    public short[][] generateExtBlockSections(final World world, final Random random, final int cx, final int cz, final BiomeGrid biomes) {
+        if (this.doState) {
             final int prime = 13;
             int h = 1;
             h = (prime * h) + cx;
             h = (prime * h) + cz;
             this.state = h;
         }
-        this.result = new short[maxY / 16][];
+        this.result = new short[this.maxY / 16][];
         for (short x = 0; x < 16; x++) {
             for (short z = 0; z < 16; z++) {
                 setBlock(this.result, x, 0, z, (short) 7);
             }
         }
-        PlotManager manager = Main.manager;
-        RegionWrapper plot = manager.CURRENT_PLOT_CLEAR;
+        final PlotManager manager = Main.manager;
+        final RegionWrapper plot = manager.CURRENT_PLOT_CLEAR;
         if (plot != null) {
-            int X = cx << 4;
-            int Z = cz << 4;
+            final int X = cx << 4;
+            final int Z = cz << 4;
             int sx = ((X) % this.size);
             int sz = ((Z) % this.size);
             if (sx < 0) {
@@ -232,12 +238,11 @@ public class HybridGen extends ChunkGenerator {
                             setBlock(this.result, x, y, z, this.filling);
                         }
                         setBlock(this.result, x, this.plotheight, z, this.plotfloors);
-                    }
-                    else {
-                        ChunkLoc loc = new ChunkLoc(X + x, Z + z);
-                        HashMap<Short, Short> blocks = manager.GENERATE_BLOCKS.get(loc);
+                    } else {
+                        final ChunkLoc loc = new ChunkLoc(X + x, Z + z);
+                        final HashMap<Short, Short> blocks = manager.GENERATE_BLOCKS.get(loc);
                         if (blocks != null) {
-                            for (short y : blocks.keySet()) {
+                            for (final short y : blocks.keySet()) {
                                 setBlock(this.result, x, y, z, blocks.get(y).shortValue());
                             }
                         }
@@ -259,38 +264,36 @@ public class HybridGen extends ChunkGenerator {
                 if (biomes != null) {
                     biomes.setBiome(x, z, this.biome);
                 }
-                int absX = ((sx + x) % this.size);
-                int absZ = ((sz + z) % this.size);
-                boolean gx = absX > pathWidthLower;
-                boolean gz = absZ > pathWidthLower;
-                boolean lx = absX < pathWidthUpper;
-                boolean lz = absZ < pathWidthUpper;
+                final int absX = ((sx + x) % this.size);
+                final int absZ = ((sz + z) % this.size);
+                final boolean gx = absX > this.pathWidthLower;
+                final boolean gz = absZ > this.pathWidthLower;
+                final boolean lx = absX < this.pathWidthUpper;
+                final boolean lz = absZ < this.pathWidthUpper;
                 if (gx && gz && lx && lz) {
                     for (short y = 1; y < this.plotheight; y++) {
                         setBlock(this.result, x, y, z, this.filling);
                     }
                     setBlock(this.result, x, this.plotheight, z, this.plotfloors);
                 } else {
-                    if ((absX >= pathWidthLower && absX <= pathWidthUpper && absZ >= pathWidthLower && absZ <= pathWidthUpper))
-                    {
+                    if (((absX >= this.pathWidthLower) && (absX <= this.pathWidthUpper) && (absZ >= this.pathWidthLower) && (absZ <= this.pathWidthUpper))) {
                         for (short y = 1; y <= this.wallheight; y++) {
                             setBlock(this.result, x, y, z, this.wallfilling);
                         }
                         if (!this.plotworld.ROAD_SCHEMATIC_ENABLED) {
                             setBlock(this.result, x, this.wallheight + 1, z, this.wall);
                         }
-                    }
-                    else {
+                    } else {
                         for (short y = 1; y <= this.roadheight; y++) {
                             setBlock(this.result, x, y, z, this.roadblock);
                         }
                     }
                     if (this.plotworld.ROAD_SCHEMATIC_ENABLED) {
-                        ChunkLoc loc = new ChunkLoc(absX, absZ);
-                        HashMap<Short, Short> blocks = this.plotworld.G_SCH.get(loc);
+                        final ChunkLoc loc = new ChunkLoc(absX, absZ);
+                        final HashMap<Short, Short> blocks = this.plotworld.G_SCH.get(loc);
                         if (blocks != null) {
-                            for (short y : blocks.keySet()) {
-                                setBlock(this.result, x, this.roadheight + y, z, blocks.get(y));        
+                            for (final short y : blocks.keySet()) {
+                                setBlock(this.result, x, this.roadheight + y, z, blocks.get(y));
                             }
                         }
                     }
@@ -299,7 +302,8 @@ public class HybridGen extends ChunkGenerator {
         }
         return this.result;
     }
-    public boolean isIn(RegionWrapper plot, int x, int z) {
-        return (x >= plot.minX && x <= plot.maxX && z >= plot.minZ && z <= plot.maxZ);
+
+    public boolean isIn(final RegionWrapper plot, final int x, final int z) {
+        return ((x >= plot.minX) && (x <= plot.maxX) && (z >= plot.minZ) && (z <= plot.maxZ));
     }
 }

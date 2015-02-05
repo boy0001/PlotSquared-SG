@@ -5,17 +5,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class MainUtil {
-    
+
     public static boolean sendMessage(final String msg) {
         return sendMessage(null, msg);
     }
-    
+
     public static boolean sendMessage(final Player plr, final String msg) {
         if ((msg.length() > 0)) {
             if (plr == null) {
                 Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
-            }
-            else {
+            } else {
                 plr.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
             }
         }

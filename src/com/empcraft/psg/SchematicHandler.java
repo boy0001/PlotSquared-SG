@@ -55,7 +55,7 @@ import com.empcraft.psg.jnbt.Tag;
  * @author Empire92
  */
 public class SchematicHandler {
-    public static Schematic getSchematic(final CompoundTag tag, File file) {
+    public static Schematic getSchematic(final CompoundTag tag, final File file) {
         final Map<String, Tag> tagMap = tag.getValue();
 
         byte[] addId = new byte[0];
@@ -92,7 +92,7 @@ public class SchematicHandler {
         }
         return new Schematic(collection, dimension, file);
     }
-    
+
     /**
      * Get a schematic
      *
@@ -100,14 +100,14 @@ public class SchematicHandler {
      *
      * @return schematic if found, else null
      */
-    public static Schematic getSchematic(String string) {
-        final File parent = new File(Main.plugin.getDataFolder() + File.separator + "schematics");
+    public static Schematic getSchematic(final String string) {
+        final File parent = new File(Main.datafolder + "schematics");
         if (!parent.exists()) {
             if (!parent.mkdir()) {
                 throw new RuntimeException("Could not create schematic parent directory");
             }
         }
-        final File file = new File(Main.plugin.getDataFolder() + File.separator + "schematics" + File.separator + string + ".schematic");
+        final File file = new File(Main.datafolder + "schematics" + File.separator + string + ".schematic");
         if (!file.exists()) {
             MainUtil.sendMessage(file.toString() + " doesn't exist");
             return null;
@@ -139,7 +139,7 @@ public class SchematicHandler {
             return false;
         }
         try {
-            File tmp = new File(path);
+            final File tmp = new File(path);
             tmp.getParentFile().mkdirs();
             final OutputStream stream = new FileOutputStream(path);
             final NBTOutputStream output = new NBTOutputStream(new GZIPOutputStream(stream));
@@ -154,7 +154,7 @@ public class SchematicHandler {
     }
 
     @SuppressWarnings("deprecation")
-    public static CompoundTag getCompoundTag(final World world, Location pos1, Location pos2) {
+    public static CompoundTag getCompoundTag(final World world, final Location pos1, final Location pos2) {
         // loading chunks
         int i = 0;
         int j = 0;
@@ -176,7 +176,7 @@ public class SchematicHandler {
             return null;
         }
         final int width = (pos2.getBlockX() - pos1.getBlockX()) + 1;
-        final int height = pos2.getBlockY() - pos1.getBlockY() + 1;
+        final int height = (pos2.getBlockY() - pos1.getBlockY()) + 1;
         final int length = (pos2.getBlockZ() - pos1.getBlockZ()) + 1;
 
         final HashMap<String, Tag> schematic = new HashMap<>();
@@ -194,15 +194,15 @@ public class SchematicHandler {
         byte[] addBlocks = null;
         final byte[] blockData = new byte[width * height * length];
 
-        int sx = pos1.getBlockX();
-        int ex = pos2.getBlockX();
-        
-        int sz = pos1.getBlockZ();
-        int ez = pos2.getBlockZ();
+        final int sx = pos1.getBlockX();
+        pos2.getBlockX();
 
-        int sy = pos1.getBlockY();
-        int ey = pos2.getBlockY();
-        
+        final int sz = pos1.getBlockZ();
+        pos2.getBlockZ();
+
+        final int sy = pos1.getBlockY();
+        pos2.getBlockY();
+
         for (int x = 0; x < width; x++) {
             for (int z = 0; z < length; z++) {
                 for (int y = 0; y < height; y++) {
@@ -210,7 +210,8 @@ public class SchematicHandler {
 
                     final Block block = world.getBlockAt(new Location(world, sx + x, sy + y, sz + z));
 
-                    @SuppressWarnings("deprecation") final int id2 = block.getTypeId();
+                    @SuppressWarnings("deprecation")
+                    final int id2 = block.getTypeId();
 
                     if (id2 > 255) {
                         if (addBlocks == null) {

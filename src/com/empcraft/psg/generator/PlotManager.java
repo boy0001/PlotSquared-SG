@@ -26,71 +26,71 @@ public class PlotManager {
     public RegionWrapper CURRENT_PLOT_CLEAR = null;
     public HashMap<ChunkLoc, HashMap<Short, Short>> GENERATE_BLOCKS = new HashMap<>();
     public HashMap<ChunkLoc, HashMap<Short, Byte>> GENERATE_DATA = new HashMap<>();
-    
-    public boolean clearPlotExperimental(final World world, Location pos1, Location pos2) {
-        Chunk c1 = world.getChunkAt(pos1);
-        Chunk c2 = world.getChunkAt(pos2);
+
+    public boolean clearPlotExperimental(final World world, final Location pos1, final Location pos2) {
+        final Chunk c1 = world.getChunkAt(pos1);
+        final Chunk c2 = world.getChunkAt(pos2);
 
         this.CURRENT_PLOT_CLEAR = new RegionWrapper(pos1.getBlockX(), pos2.getBlockX(), pos1.getBlockZ(), pos2.getBlockZ());
-        
-        int sx = pos1.getBlockX();
-        int sz = pos1.getBlockZ();
-        int ex = pos2.getBlockX();
-        int ez = pos2.getBlockZ();
-        
-        int c1x = c1.getX();
-        int c1z = c1.getZ();
-        int c2x = c2.getX();
-        int c2z = c2.getZ();
 
-        int maxY = world.getMaxHeight();
-        
-        for (int x = c1x; x <= c2x; x ++) {
-            for (int z = c1z; z <= c2z; z ++) {
-                
-                Chunk chunk = world.getChunkAt(x, z);
-                
+        final int sx = pos1.getBlockX();
+        final int sz = pos1.getBlockZ();
+        final int ex = pos2.getBlockX();
+        final int ez = pos2.getBlockZ();
+
+        final int c1x = c1.getX();
+        final int c1z = c1.getZ();
+        final int c2x = c2.getX();
+        final int c2z = c2.getZ();
+
+        final int maxY = world.getMaxHeight();
+
+        for (int x = c1x; x <= c2x; x++) {
+            for (int z = c1z; z <= c2z; z++) {
+
+                final Chunk chunk = world.getChunkAt(x, z);
+
                 boolean loaded = true;
-                
+
                 if (!chunk.isLoaded()) {
-                    boolean result = chunk.load(false);
+                    final boolean result = chunk.load(false);
                     if (!result) {
-                        loaded = false;;
+                        loaded = false;
+                        ;
                     }
                     if (!chunk.isLoaded()) {
                         loaded = false;
                     }
                 }
-                
+
                 if (loaded) {
-                    int absX = x << 4;
-                    int absZ = z << 4;
-                    
+                    final int absX = x << 4;
+                    final int absZ = z << 4;
+
                     this.GENERATE_BLOCKS = new HashMap<>();
                     this.GENERATE_DATA = new HashMap<>();
-                    
-                    HashMap<BlockLoc, ItemStack[]> chestContents = new HashMap<>();
-                    HashMap<BlockLoc, ItemStack[]> furnaceContents = new HashMap<>();
-                    HashMap<BlockLoc, ItemStack[]> dispenserContents = new HashMap<>();
-                    HashMap<BlockLoc, ItemStack[]> brewingStandContents = new HashMap<>();
-                    HashMap<BlockLoc, ItemStack[]> beaconContents = new HashMap<>();
-                    HashMap<BlockLoc, ItemStack[]> hopperContents = new HashMap<>();
-                    HashMap<BlockLoc, Note> noteBlockContents = new HashMap<>();
-                    HashMap<BlockLoc, String[]> signContents = new HashMap<>();
-                    
-                    
-                    if (x == c1x || z == c1z) {
+
+                    final HashMap<BlockLoc, ItemStack[]> chestContents = new HashMap<>();
+                    final HashMap<BlockLoc, ItemStack[]> furnaceContents = new HashMap<>();
+                    final HashMap<BlockLoc, ItemStack[]> dispenserContents = new HashMap<>();
+                    final HashMap<BlockLoc, ItemStack[]> brewingStandContents = new HashMap<>();
+                    final HashMap<BlockLoc, ItemStack[]> beaconContents = new HashMap<>();
+                    final HashMap<BlockLoc, ItemStack[]> hopperContents = new HashMap<>();
+                    final HashMap<BlockLoc, Note> noteBlockContents = new HashMap<>();
+                    final HashMap<BlockLoc, String[]> signContents = new HashMap<>();
+
+                    if ((x == c1x) || (z == c1z)) {
                         for (int X = 0; X < 16; X++) {
                             for (int Z = 0; Z < 16; Z++) {
-                                if ((X + absX < sx || Z + absZ < sz) || (X + absX > ex || Z + absZ > ez)) {
-                                    HashMap<Short, Short> ids = new HashMap<>();
-                                    HashMap<Short, Byte> datas = new HashMap<>();
+                                if ((((X + absX) < sx) || ((Z + absZ) < sz)) || (((X + absX) > ex) || ((Z + absZ) > ez))) {
+                                    final HashMap<Short, Short> ids = new HashMap<>();
+                                    final HashMap<Short, Byte> datas = new HashMap<>();
                                     for (short y = 1; y < maxY; y++) {
-                                        Block block = world.getBlockAt(X + absX, y, Z + absZ);
-                                        short id = (short) block.getTypeId();
+                                        final Block block = world.getBlockAt(X + absX, y, Z + absZ);
+                                        final short id = (short) block.getTypeId();
                                         if (id != 0) {
                                             ids.put(y, id);
-                                            byte data = block.getData();
+                                            final byte data = block.getData();
                                             if (data != 0) {
                                                 datas.put(y, data);
                                             }
@@ -98,74 +98,76 @@ public class PlotManager {
                                             switch (id) {
                                                 case 54:
                                                     bl = new BlockLoc(X + absX, y, Z + absZ);
-                                                    Chest chest = (Chest) block.getState();
-                                                    ItemStack[] inventory = chest.getBlockInventory().getContents().clone();
+                                                    final Chest chest = (Chest) block.getState();
+                                                    final ItemStack[] inventory = chest.getBlockInventory().getContents().clone();
                                                     chestContents.put(bl, inventory);
                                                     break;
-                                                case 63: case 68: case 323:
+                                                case 63:
+                                                case 68:
+                                                case 323:
                                                     bl = new BlockLoc(X + absX, y, Z + absZ);
-                                                    Sign sign = (Sign) block.getState();
+                                                    final Sign sign = (Sign) block.getState();
                                                     sign.getLines();
                                                     signContents.put(bl, sign.getLines().clone());
                                                     break;
-                                                case 61: case 62:
+                                                case 61:
+                                                case 62:
                                                     bl = new BlockLoc(X + absX, y, Z + absZ);
-                                                    Furnace furnace = (Furnace) block.getState();
-                                                    ItemStack[] invFur = furnace.getInventory().getContents().clone();
+                                                    final Furnace furnace = (Furnace) block.getState();
+                                                    final ItemStack[] invFur = furnace.getInventory().getContents().clone();
                                                     furnaceContents.put(bl, invFur);
                                                     break;
                                                 case 23:
                                                     bl = new BlockLoc(X + absX, y, Z + absZ);
-                                                    Dispenser dispenser = (Dispenser) block.getState();
-                                                    ItemStack[] invDis = dispenser.getInventory().getContents().clone();
+                                                    final Dispenser dispenser = (Dispenser) block.getState();
+                                                    final ItemStack[] invDis = dispenser.getInventory().getContents().clone();
                                                     dispenserContents.put(bl, invDis);
                                                     break;
                                                 case 117:
                                                     bl = new BlockLoc(X + absX, y, Z + absZ);
-                                                    BrewingStand brewingStand = (BrewingStand) block.getState();
-                                                    ItemStack[] invBre = brewingStand.getInventory().getContents().clone();
+                                                    final BrewingStand brewingStand = (BrewingStand) block.getState();
+                                                    final ItemStack[] invBre = brewingStand.getInventory().getContents().clone();
                                                     brewingStandContents.put(bl, invBre);
                                                     break;
                                                 case 25:
                                                     bl = new BlockLoc(X + absX, y, Z + absZ);
-                                                    NoteBlock noteBlock = (NoteBlock) block.getState();
-                                                    Note note = noteBlock.getNote();
+                                                    final NoteBlock noteBlock = (NoteBlock) block.getState();
+                                                    final Note note = noteBlock.getNote();
                                                     noteBlockContents.put(bl, note);
                                                     break;
                                                 case 138:
                                                     bl = new BlockLoc(X + absX, y, Z + absZ);
-                                                    Beacon beacon = (Beacon) block.getState();
-                                                    ItemStack[] invBea = beacon.getInventory().getContents().clone();
+                                                    final Beacon beacon = (Beacon) block.getState();
+                                                    final ItemStack[] invBea = beacon.getInventory().getContents().clone();
                                                     beaconContents.put(bl, invBea);
                                                     break;
                                                 case 154:
                                                     bl = new BlockLoc(X + absX, y, Z + absZ);
-                                                    Hopper hopper = (Hopper) block.getState();
-                                                    ItemStack[] invHop = hopper.getInventory().getContents().clone();
+                                                    final Hopper hopper = (Hopper) block.getState();
+                                                    final ItemStack[] invHop = hopper.getInventory().getContents().clone();
                                                     hopperContents.put(bl, invHop);
                                                     break;
                                             }
                                         }
                                     }
-                                    ChunkLoc loc = new ChunkLoc(X + absX, Z + absZ);
+                                    final ChunkLoc loc = new ChunkLoc(X + absX, Z + absZ);
                                     this.GENERATE_BLOCKS.put(loc, ids);
                                     this.GENERATE_DATA.put(loc, datas);
                                 }
                             }
                         }
-                    }
-                    else if (x == c2x || z == c2z) {
+                    } else if ((x == c2x) || (z == c2z)) {
                         for (int X = 0; X < 16; X++) {
                             for (int Z = 0; Z < 16; Z++) {
-                                if ((X + absX > ex || Z + absZ > ez) || (X + absX < sx || Z + absZ < sz)) {
-                                    HashMap<Short, Short> ids = new HashMap<>();
-                                    HashMap<Short, Byte> datas = new HashMap<>();
+                                if ((((X + absX) > ex) || ((Z + absZ) > ez)) || (((X + absX) < sx) || ((Z + absZ) < sz))) {
+                                    final HashMap<Short, Short> ids = new HashMap<>();
+                                    final HashMap<Short, Byte> datas = new HashMap<>();
                                     for (short y = 1; y < maxY; y++) {
-                                        Block block = world.getBlockAt(X + absX, y, Z + absZ);
-                                        short id = (short) block.getTypeId();
+                                        final Block block = world.getBlockAt(X + absX, y, Z + absZ);
+                                        final short id = (short) block.getTypeId();
                                         if (id != 0) {
                                             ids.put(y, id);
-                                            byte data = block.getData();
+                                            final byte data = block.getData();
                                             if (data != 0) {
                                                 datas.put(y, data);
                                             }
@@ -173,56 +175,59 @@ public class PlotManager {
                                             switch (id) {
                                                 case 54:
                                                     bl = new BlockLoc(X + absX, y, Z + absZ);
-                                                    Chest chest = (Chest) block.getState();
-                                                    ItemStack[] inventory = chest.getBlockInventory().getContents().clone();
+                                                    final Chest chest = (Chest) block.getState();
+                                                    final ItemStack[] inventory = chest.getBlockInventory().getContents().clone();
                                                     chestContents.put(bl, inventory);
                                                     break;
-                                                case 63: case 68: case 323:
+                                                case 63:
+                                                case 68:
+                                                case 323:
                                                     bl = new BlockLoc(X + absX, y, Z + absZ);
-                                                    Sign sign = (Sign) block.getState();
+                                                    final Sign sign = (Sign) block.getState();
                                                     sign.getLines();
                                                     signContents.put(bl, sign.getLines().clone());
                                                     break;
-                                                case 61: case 62:
+                                                case 61:
+                                                case 62:
                                                     bl = new BlockLoc(X + absX, y, Z + absZ);
-                                                    Furnace furnace = (Furnace) block.getState();
-                                                    ItemStack[] invFur = furnace.getInventory().getContents().clone();
+                                                    final Furnace furnace = (Furnace) block.getState();
+                                                    final ItemStack[] invFur = furnace.getInventory().getContents().clone();
                                                     furnaceContents.put(bl, invFur);
                                                     break;
                                                 case 23:
                                                     bl = new BlockLoc(X + absX, y, Z + absZ);
-                                                    Dispenser dispenser = (Dispenser) block.getState();
-                                                    ItemStack[] invDis = dispenser.getInventory().getContents().clone();
+                                                    final Dispenser dispenser = (Dispenser) block.getState();
+                                                    final ItemStack[] invDis = dispenser.getInventory().getContents().clone();
                                                     dispenserContents.put(bl, invDis);
                                                     break;
                                                 case 117:
                                                     bl = new BlockLoc(X + absX, y, Z + absZ);
-                                                    BrewingStand brewingStand = (BrewingStand) block.getState();
-                                                    ItemStack[] invBre = brewingStand.getInventory().getContents().clone();
+                                                    final BrewingStand brewingStand = (BrewingStand) block.getState();
+                                                    final ItemStack[] invBre = brewingStand.getInventory().getContents().clone();
                                                     brewingStandContents.put(bl, invBre);
                                                     break;
                                                 case 25:
                                                     bl = new BlockLoc(X + absX, y, Z + absZ);
-                                                    NoteBlock noteBlock = (NoteBlock) block.getState();
-                                                    Note note = noteBlock.getNote();
+                                                    final NoteBlock noteBlock = (NoteBlock) block.getState();
+                                                    final Note note = noteBlock.getNote();
                                                     noteBlockContents.put(bl, note);
                                                     break;
                                                 case 138:
                                                     bl = new BlockLoc(X + absX, y, Z + absZ);
-                                                    Beacon beacon = (Beacon) block.getState();
-                                                    ItemStack[] invBea = beacon.getInventory().getContents().clone();
+                                                    final Beacon beacon = (Beacon) block.getState();
+                                                    final ItemStack[] invBea = beacon.getInventory().getContents().clone();
                                                     beaconContents.put(bl, invBea);
                                                     break;
                                                 case 154:
                                                     bl = new BlockLoc(X + absX, y, Z + absZ);
-                                                    Hopper hopper = (Hopper) block.getState();
-                                                    ItemStack[] invHop = hopper.getInventory().getContents().clone();
+                                                    final Hopper hopper = (Hopper) block.getState();
+                                                    final ItemStack[] invHop = hopper.getInventory().getContents().clone();
                                                     hopperContents.put(bl, invHop);
                                                     break;
                                             }
                                         }
                                     }
-                                    ChunkLoc loc = new ChunkLoc(X + absX, Z + absZ);
+                                    final ChunkLoc loc = new ChunkLoc(X + absX, Z + absZ);
                                     this.GENERATE_BLOCKS.put(loc, ids);
                                     this.GENERATE_DATA.put(loc, datas);
                                 }
@@ -230,79 +235,79 @@ public class PlotManager {
                         }
                     }
                     world.regenerateChunk(x, z);
-                    
-                    for (BlockLoc loc: chestContents.keySet()) {
-                        Block block = world.getBlockAt(loc.x, loc.y, loc.z);
-                        BlockState state = block.getState();
+
+                    for (final BlockLoc loc : chestContents.keySet()) {
+                        final Block block = world.getBlockAt(loc.x, loc.y, loc.z);
+                        final BlockState state = block.getState();
                         if (state instanceof Chest) {
-                            Chest chest = (Chest) state;
+                            final Chest chest = (Chest) state;
                             chest.getInventory().setContents(chestContents.get(loc));
                             state.update(true);
                         }
                     }
-                    
-                    for (BlockLoc loc: signContents.keySet()) {
-                        Block block = world.getBlockAt(loc.x, loc.y, loc.z);
-                        BlockState state = block.getState();
+
+                    for (final BlockLoc loc : signContents.keySet()) {
+                        final Block block = world.getBlockAt(loc.x, loc.y, loc.z);
+                        final BlockState state = block.getState();
                         if (state instanceof Sign) {
-                            Sign sign = (Sign) state;
+                            final Sign sign = (Sign) state;
                             int i = 0;
-                            for (String line : signContents.get(loc)) {
+                            for (final String line : signContents.get(loc)) {
                                 sign.setLine(i, line);
                                 i++;
                             }
                             state.update(true);
                         }
                     }
-                    
-                    for (BlockLoc loc: dispenserContents.keySet()) {
-                        Block block = world.getBlockAt(loc.x, loc.y, loc.z);
-                        BlockState state = block.getState();
+
+                    for (final BlockLoc loc : dispenserContents.keySet()) {
+                        final Block block = world.getBlockAt(loc.x, loc.y, loc.z);
+                        final BlockState state = block.getState();
                         if (state instanceof Dispenser) {
                             ((Dispenser) (state)).getInventory().setContents(dispenserContents.get(loc));
                             state.update(true);
                         }
                     }
-                    
-                    for (BlockLoc loc: beaconContents.keySet()) {
-                        Block block = world.getBlockAt(loc.x, loc.y, loc.z);
-                        BlockState state = block.getState();
+
+                    for (final BlockLoc loc : beaconContents.keySet()) {
+                        final Block block = world.getBlockAt(loc.x, loc.y, loc.z);
+                        final BlockState state = block.getState();
                         if (state instanceof Beacon) {
                             ((Beacon) (state)).getInventory().setContents(beaconContents.get(loc));
                             state.update(true);
                         }
                     }
-                    
-                    for (BlockLoc loc: hopperContents.keySet()) {
-                        Block block = world.getBlockAt(loc.x, loc.y, loc.z);
-                        BlockState state = block.getState();
+
+                    for (final BlockLoc loc : hopperContents.keySet()) {
+                        final Block block = world.getBlockAt(loc.x, loc.y, loc.z);
+                        final BlockState state = block.getState();
                         if (state instanceof Hopper) {
                             ((Hopper) (state)).getInventory().setContents(hopperContents.get(loc));
                             state.update(true);
                         }
                     }
-                    
-                    for (BlockLoc loc: noteBlockContents.keySet()) {
-                        Block block = world.getBlockAt(loc.x, loc.y, loc.z);
-                        BlockState state = block.getState();
+
+                    for (final BlockLoc loc : noteBlockContents.keySet()) {
+                        final Block block = world.getBlockAt(loc.x, loc.y, loc.z);
+                        final BlockState state = block.getState();
                         if (state instanceof NoteBlock) {
                             ((NoteBlock) (state)).setNote(noteBlockContents.get(loc));
                             state.update(true);
                         }
                     }
-                    
-                    for (BlockLoc loc: brewingStandContents.keySet()) {
-                        Block block = world.getBlockAt(loc.x, loc.y, loc.z);
-                        BlockState state = block.getState();
+
+                    for (final BlockLoc loc : brewingStandContents.keySet()) {
+                        final Block block = world.getBlockAt(loc.x, loc.y, loc.z);
+                        final BlockState state = block.getState();
                         if (state instanceof BrewingStand) {
                             ((BrewingStand) (state)).getInventory().setContents(brewingStandContents.get(loc));
                             state.update(true);
                         }
                     }
-                    
-                    for (BlockLoc loc: furnaceContents.keySet()) {
-                        Block block = world.getBlockAt(loc.x, loc.y, loc.z);
-                        BlockState state = block.getState();
+
+                    for (final BlockLoc loc : furnaceContents.keySet()) {
+                        final Block block = world.getBlockAt(loc.x, loc.y, loc.z);
+                        final BlockState state = block.getState();
                         if (state instanceof Furnace) {
                             ((Furnace) (state)).getInventory().setContents(furnaceContents.get(loc));
                             state.update(true);
@@ -313,10 +318,10 @@ public class PlotManager {
                 }
             }
         }
-        
+
         this.CURRENT_PLOT_CLEAR = null;
-        
+
         return true;
     }
-    
+
 }

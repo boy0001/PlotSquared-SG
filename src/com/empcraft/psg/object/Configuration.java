@@ -30,7 +30,8 @@ import org.bukkit.block.Biome;
  *
  * @author Empire92
  */
-@SuppressWarnings("unused") public class Configuration {
+@SuppressWarnings("unused")
+public class Configuration {
 
     public static final SettingValue STRING = new SettingValue("STRING") {
         @Override

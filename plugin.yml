@@ -1,7 +1,12 @@
-name: PlotSquaredGen
+name: PlotSquaredSG
 main: com.empcraft.psg.Main
 version: 1.0.0
 load: STARTUP
 softdepend: [PlotMe]
 description: PlotSquared standalone generator (easily portable to any plot management system)
-authors: [Citymonstret, Empire92]
+authors: [Empire92, Citymonstret]
+commands:
+   createroadschematic:
+      description: Create a road schematic from a plot.
+      usage: Use /createroadschematic
+      permission-message: A magical beast called 'The permissions system' has stopped you in your tracks. You must complete the quest for the 'plots.admin permission node' in order to best it.

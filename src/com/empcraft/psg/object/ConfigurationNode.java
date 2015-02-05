@@ -73,15 +73,13 @@ public class ConfigurationNode {
     public Object getValue() {
         if (this.value instanceof String[]) {
             return Arrays.asList((String[]) this.value);
-        }
-        else if (this.value instanceof Object[]) {
-            List<String> values = new ArrayList<String>();
-            for (Object value : (Object[]) this.value) {
+        } else if (this.value instanceof Object[]) {
+            final List<String> values = new ArrayList<String>();
+            for (final Object value : (Object[]) this.value) {
                 values.add(value.toString());
             }
             return values;
-        }
-        else if (this.value instanceof PlotBlock) {
+        } else if (this.value instanceof PlotBlock) {
             return this.value.toString();
         }
         return this.value;
