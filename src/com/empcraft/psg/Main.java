@@ -55,14 +55,14 @@ public class Main extends JavaPlugin {
         configFile = new File(datafolder + "config" + File.separator +"settings.yml");
         File parent = configFile.getParentFile();
         if (!parent.exists() && !parent.mkdirs()) {
-            System.out.print("Count not create parent directory for settings.yml\n - please create manually 'plugins/PlotSquared/config/settings.yml'");
+            MainUtil.sendMessage("Count not create parent directory for settings.yml\n - please create manually 'plugins/PlotSquared/config/settings.yml'");
         }
         try {
             if (!configFile.exists() && !configFile.createNewFile()) {
-                System.out.print("Count not create parent file for settings.yml\n - please create manually 'plugins/PlotSquared/config/settings.yml'");
+                MainUtil.sendMessage("Count not create parent file for settings.yml\n - please create manually 'plugins/PlotSquared/config/settings.yml'");
             }
         } catch (IOException e) {
-            System.out.print("Count not create parent file for settings.yml\n - please create manually 'plugins/PlotSquared/config/settings.yml'");
+            MainUtil.sendMessage("Count not create parent file for settings.yml\n - please create manually 'plugins/PlotSquared/config/settings.yml'");
         }
         config = YamlConfiguration.loadConfiguration(configFile);
     }
