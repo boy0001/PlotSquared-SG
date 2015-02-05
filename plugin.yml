@@ -1,0 +1,7 @@
+name: PlotSquaredGen
+main: com.empcraft.psg.Main
+version: 1
+load: STARTUP
+softdepend: [PlotMe]
+description: PlotSquared standalone generator (easily portable to any plot management system)
+authors: [Citymonstret, Empire92]
