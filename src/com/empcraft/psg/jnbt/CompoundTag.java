@@ -9,9 +9,9 @@ import java.util.Map;
  * The {@code TAG_Compound} tag.
  */
 public final class CompoundTag extends Tag {
-
+    
     private final Map<String, Tag> value;
-
+    
     /**
      * Creates the tag with an empty name.
      *
@@ -21,7 +21,7 @@ public final class CompoundTag extends Tag {
         super();
         this.value = Collections.unmodifiableMap(value);
     }
-
+    
     /**
      * Creates the tag.
      *
@@ -32,7 +32,7 @@ public final class CompoundTag extends Tag {
         super(name);
         this.value = Collections.unmodifiableMap(value);
     }
-
+    
     /**
      * Returns whether this compound tag contains the given key.
      *
@@ -43,12 +43,12 @@ public final class CompoundTag extends Tag {
     public boolean containsKey(final String key) {
         return this.value.containsKey(key);
     }
-
+    
     @Override
     public Map<String, Tag> getValue() {
         return this.value;
     }
-
+    
     /**
      * Return a new compound tag with the given values.
      *
@@ -59,7 +59,7 @@ public final class CompoundTag extends Tag {
     public CompoundTag setValue(final Map<String, Tag> value) {
         return new CompoundTag(getName(), value);
     }
-
+    
     /**
      * Create a compound tag builder.
      *
@@ -68,7 +68,7 @@ public final class CompoundTag extends Tag {
     public CompoundTagBuilder createBuilder() {
         return new CompoundTagBuilder(new HashMap<String, Tag>(this.value));
     }
-
+    
     /**
      * Get a byte array named with the given key. <p/> <p> If the key does not exist or its value is not a byte array
      * tag, then an empty byte array will be returned. </p>
@@ -85,7 +85,7 @@ public final class CompoundTag extends Tag {
             return new byte[0];
         }
     }
-
+    
     /**
      * Get a byte named with the given key. <p/> <p> If the key does not exist or its value is not a byte tag, then
      * {@code 0} will be returned. </p>
@@ -102,7 +102,7 @@ public final class CompoundTag extends Tag {
             return (byte) 0;
         }
     }
-
+    
     /**
      * Get a double named with the given key. <p/> <p> If the key does not exist or its value is not a double tag, then
      * {@code 0} will be returned. </p>
@@ -119,7 +119,7 @@ public final class CompoundTag extends Tag {
             return 0;
         }
     }
-
+    
     /**
      * Get a double named with the given key, even if it's another type of number. <p/> <p> If the key does not exist or
      * its value is not a number, then {@code 0} will be returned. </p>
@@ -132,27 +132,27 @@ public final class CompoundTag extends Tag {
         final Tag tag = this.value.get(key);
         if (tag instanceof ByteTag) {
             return ((ByteTag) tag).getValue();
-
+            
         } else if (tag instanceof ShortTag) {
             return ((ShortTag) tag).getValue();
-
+            
         } else if (tag instanceof IntTag) {
             return ((IntTag) tag).getValue();
-
+            
         } else if (tag instanceof LongTag) {
             return ((LongTag) tag).getValue();
-
+            
         } else if (tag instanceof FloatTag) {
             return ((FloatTag) tag).getValue();
-
+            
         } else if (tag instanceof DoubleTag) {
             return ((DoubleTag) tag).getValue();
-
+            
         } else {
             return 0;
         }
     }
-
+    
     /**
      * Get a float named with the given key. <p/> <p> If the key does not exist or its value is not a float tag, then
      * {@code 0} will be returned. </p>
@@ -169,7 +169,7 @@ public final class CompoundTag extends Tag {
             return 0;
         }
     }
-
+    
     /**
      * Get a {@code int[]} named with the given key. <p/> <p> If the key does not exist or its value is not an int array
      * tag, then an empty array will be returned. </p>
@@ -186,7 +186,7 @@ public final class CompoundTag extends Tag {
             return new int[0];
         }
     }
-
+    
     /**
      * Get an int named with the given key. <p/> <p> If the key does not exist or its value is not an int tag, then
      * {@code 0} will be returned. </p>
@@ -203,7 +203,7 @@ public final class CompoundTag extends Tag {
             return 0;
         }
     }
-
+    
     /**
      * Get an int named with the given key, even if it's another type of number. <p/> <p> If the key does not exist or
      * its value is not a number, then {@code 0} will be returned. </p>
@@ -216,27 +216,27 @@ public final class CompoundTag extends Tag {
         final Tag tag = this.value.get(key);
         if (tag instanceof ByteTag) {
             return ((ByteTag) tag).getValue();
-
+            
         } else if (tag instanceof ShortTag) {
             return ((ShortTag) tag).getValue();
-
+            
         } else if (tag instanceof IntTag) {
             return ((IntTag) tag).getValue();
-
+            
         } else if (tag instanceof LongTag) {
             return ((LongTag) tag).getValue().intValue();
-
+            
         } else if (tag instanceof FloatTag) {
             return ((FloatTag) tag).getValue().intValue();
-
+            
         } else if (tag instanceof DoubleTag) {
             return ((DoubleTag) tag).getValue().intValue();
-
+            
         } else {
             return 0;
         }
     }
-
+    
     /**
      * Get a list of tags named with the given key. <p/> <p> If the key does not exist or its value is not a list tag,
      * then an empty list will be returned. </p>
@@ -253,7 +253,7 @@ public final class CompoundTag extends Tag {
             return Collections.emptyList();
         }
     }
-
+    
     /**
      * Get a {@code TagList} named with the given key. <p/> <p> If the key does not exist or its value is not a list
      * tag, then an empty tag list will be returned. </p>
@@ -270,7 +270,7 @@ public final class CompoundTag extends Tag {
             return new ListTag(key, StringTag.class, Collections.<Tag> emptyList());
         }
     }
-
+    
     /**
      * Get a list of tags named with the given key. <p/> <p> If the key does not exist or its value is not a list tag,
      * then an empty list will be returned. If the given key references a list but the list of of a different type, then
@@ -296,7 +296,7 @@ public final class CompoundTag extends Tag {
             return Collections.emptyList();
         }
     }
-
+    
     /**
      * Get a long named with the given key. <p/> <p> If the key does not exist or its value is not a long tag, then
      * {@code 0} will be returned. </p>
@@ -313,7 +313,7 @@ public final class CompoundTag extends Tag {
             return 0L;
         }
     }
-
+    
     /**
      * Get a long named with the given key, even if it's another type of number. <p/> <p> If the key does not exist or
      * its value is not a number, then {@code 0} will be returned. </p>
@@ -326,27 +326,27 @@ public final class CompoundTag extends Tag {
         final Tag tag = this.value.get(key);
         if (tag instanceof ByteTag) {
             return ((ByteTag) tag).getValue();
-
+            
         } else if (tag instanceof ShortTag) {
             return ((ShortTag) tag).getValue();
-
+            
         } else if (tag instanceof IntTag) {
             return ((IntTag) tag).getValue();
-
+            
         } else if (tag instanceof LongTag) {
             return ((LongTag) tag).getValue();
-
+            
         } else if (tag instanceof FloatTag) {
             return ((FloatTag) tag).getValue().longValue();
-
+            
         } else if (tag instanceof DoubleTag) {
             return ((DoubleTag) tag).getValue().longValue();
-
+            
         } else {
             return 0L;
         }
     }
-
+    
     /**
      * Get a short named with the given key. <p/> <p> If the key does not exist or its value is not a short tag, then
      * {@code 0} will be returned. </p>
@@ -363,7 +363,7 @@ public final class CompoundTag extends Tag {
             return 0;
         }
     }
-
+    
     /**
      * Get a string named with the given key. <p/> <p> If the key does not exist or its value is not a string tag, then
      * {@code ""} will be returned. </p>
@@ -380,7 +380,7 @@ public final class CompoundTag extends Tag {
             return "";
         }
     }
-
+    
     @Override
     public String toString() {
         final String name = getName();
@@ -396,5 +396,5 @@ public final class CompoundTag extends Tag {
         bldr.append("}");
         return bldr.toString();
     }
-
+    
 }

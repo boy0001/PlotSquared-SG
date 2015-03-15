@@ -25,16 +25,16 @@ package com.empcraft.psg.jnbt;
  * Represents a NBT tag.
  */
 public abstract class Tag {
-
+    
     private final String name;
-
+    
     /**
      * Create a new tag with an empty name.
      */
     Tag() {
         this("");
     }
-
+    
     /**
      * Creates the tag with the specified name.
      *
@@ -46,7 +46,7 @@ public abstract class Tag {
         }
         this.name = name;
     }
-
+    
     /**
      * Gets the name of this tag.
      *
@@ -55,12 +55,12 @@ public abstract class Tag {
     public final String getName() {
         return this.name;
     }
-
+    
     /**
      * Gets the value of this tag.
      *
      * @return the value
      */
     public abstract Object getValue();
-
+    
 }

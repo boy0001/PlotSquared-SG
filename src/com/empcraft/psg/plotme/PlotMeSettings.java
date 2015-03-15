@@ -57,5 +57,5 @@ public class PlotMeSettings {
         blockPlacedLast.add(Integer.valueOf(Material.REDSTONE_COMPARATOR_OFF.getId()));
         blockPlacedLast.add(Integer.valueOf(Material.REDSTONE_COMPARATOR_ON.getId()));
         blockPlacedLast.add(Integer.valueOf(Material.ACTIVATOR_RAIL.getId()));
-    }    
+    }
 }

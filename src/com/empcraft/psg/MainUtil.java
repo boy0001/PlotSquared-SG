@@ -5,11 +5,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class MainUtil {
-
+    
     public static boolean sendMessage(final String msg) {
         return sendMessage(null, msg);
     }
-
+    
     public static boolean sendMessage(final Player plr, final String msg) {
         if ((msg.length() > 0)) {
             if (plr == null) {
@@ -20,7 +20,7 @@ public class MainUtil {
         }
         return true;
     }
-
+    
     public static boolean hasPermission(final Player player, final String perm) {
         if ((player == null) || player.isOp()) {
             return true;
@@ -38,7 +38,7 @@ public class MainUtil {
         }
         return false;
     }
-
+    
     public static String colorize(final String line) {
         return ChatColor.translateAlternateColorCodes('&', line);
     }

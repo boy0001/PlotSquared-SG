@@ -26,32 +26,32 @@ public class PlotManager {
     public RegionWrapper CURRENT_PLOT_CLEAR = null;
     public HashMap<ChunkLoc, HashMap<Short, Short>> GENERATE_BLOCKS = new HashMap<>();
     public HashMap<ChunkLoc, HashMap<Short, Byte>> GENERATE_DATA = new HashMap<>();
-
+    
     public boolean clearPlotExperimental(final World world, final Location pos1, final Location pos2) {
         final Chunk c1 = world.getChunkAt(pos1);
         final Chunk c2 = world.getChunkAt(pos2);
-
+        
         this.CURRENT_PLOT_CLEAR = new RegionWrapper(pos1.getBlockX(), pos2.getBlockX(), pos1.getBlockZ(), pos2.getBlockZ());
-
+        
         final int sx = pos1.getBlockX();
         final int sz = pos1.getBlockZ();
         final int ex = pos2.getBlockX();
         final int ez = pos2.getBlockZ();
-
+        
         final int c1x = c1.getX();
         final int c1z = c1.getZ();
         final int c2x = c2.getX();
         final int c2z = c2.getZ();
-
+        
         final int maxY = world.getMaxHeight();
-
+        
         for (int x = c1x; x <= c2x; x++) {
             for (int z = c1z; z <= c2z; z++) {
-
+                
                 final Chunk chunk = world.getChunkAt(x, z);
-
+                
                 boolean loaded = true;
-
+                
                 if (!chunk.isLoaded()) {
                     final boolean result = chunk.load(false);
                     if (!result) {
@@ -62,14 +62,14 @@ public class PlotManager {
                         loaded = false;
                     }
                 }
-
+                
                 if (loaded) {
                     final int absX = x << 4;
                     final int absZ = z << 4;
-
+                    
                     this.GENERATE_BLOCKS = new HashMap<>();
                     this.GENERATE_DATA = new HashMap<>();
-
+                    
                     final HashMap<BlockLoc, ItemStack[]> chestContents = new HashMap<>();
                     final HashMap<BlockLoc, ItemStack[]> furnaceContents = new HashMap<>();
                     final HashMap<BlockLoc, ItemStack[]> dispenserContents = new HashMap<>();
@@ -78,7 +78,7 @@ public class PlotManager {
                     final HashMap<BlockLoc, ItemStack[]> hopperContents = new HashMap<>();
                     final HashMap<BlockLoc, Note> noteBlockContents = new HashMap<>();
                     final HashMap<BlockLoc, String[]> signContents = new HashMap<>();
-
+                    
                     if ((x == c1x) || (z == c1z)) {
                         for (int X = 0; X < 16; X++) {
                             for (int Z = 0; Z < 16; Z++) {
@@ -235,7 +235,7 @@ public class PlotManager {
                         }
                     }
                     world.regenerateChunk(x, z);
-
+                    
                     for (final BlockLoc loc : chestContents.keySet()) {
                         final Block block = world.getBlockAt(loc.x, loc.y, loc.z);
                         final BlockState state = block.getState();
@@ -245,7 +245,7 @@ public class PlotManager {
                             state.update(true);
                         }
                     }
-
+                    
                     for (final BlockLoc loc : signContents.keySet()) {
                         final Block block = world.getBlockAt(loc.x, loc.y, loc.z);
                         final BlockState state = block.getState();
@@ -259,7 +259,7 @@ public class PlotManager {
                             state.update(true);
                         }
                     }
-
+                    
                     for (final BlockLoc loc : dispenserContents.keySet()) {
                         final Block block = world.getBlockAt(loc.x, loc.y, loc.z);
                         final BlockState state = block.getState();
@@ -268,7 +268,7 @@ public class PlotManager {
                             state.update(true);
                         }
                     }
-
+                    
                     for (final BlockLoc loc : beaconContents.keySet()) {
                         final Block block = world.getBlockAt(loc.x, loc.y, loc.z);
                         final BlockState state = block.getState();
@@ -277,7 +277,7 @@ public class PlotManager {
                             state.update(true);
                         }
                     }
-
+                    
                     for (final BlockLoc loc : hopperContents.keySet()) {
                         final Block block = world.getBlockAt(loc.x, loc.y, loc.z);
                         final BlockState state = block.getState();
@@ -286,7 +286,7 @@ public class PlotManager {
                             state.update(true);
                         }
                     }
-
+                    
                     for (final BlockLoc loc : noteBlockContents.keySet()) {
                         final Block block = world.getBlockAt(loc.x, loc.y, loc.z);
                         final BlockState state = block.getState();
@@ -295,7 +295,7 @@ public class PlotManager {
                             state.update(true);
                         }
                     }
-
+                    
                     for (final BlockLoc loc : brewingStandContents.keySet()) {
                         final Block block = world.getBlockAt(loc.x, loc.y, loc.z);
                         final BlockState state = block.getState();
@@ -304,7 +304,7 @@ public class PlotManager {
                             state.update(true);
                         }
                     }
-
+                    
                     for (final BlockLoc loc : furnaceContents.keySet()) {
                         final Block block = world.getBlockAt(loc.x, loc.y, loc.z);
                         final BlockState state = block.getState();
@@ -318,10 +318,10 @@ public class PlotManager {
                 }
             }
         }
-
+        
         this.CURRENT_PLOT_CLEAR = null;
-
+        
         return true;
     }
-
+    
 }

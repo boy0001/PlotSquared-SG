@@ -27,12 +27,12 @@ package com.empcraft.psg.object;
 public class PlotBlock {
     public final short id;
     public final byte data;
-
+    
     public PlotBlock(final short id, final byte data) {
         this.id = id;
         this.data = data;
     }
-
+    
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
@@ -47,12 +47,12 @@ public class PlotBlock {
         final PlotBlock other = (PlotBlock) obj;
         return ((this.id == other.id) && ((this.data == other.data) || (other.data == -1)));
     }
-
+    
     @Override
     public int hashCode() {
         return ((this.id + this.data) * (this.id + this.data + 1)) + this.data;
     }
-
+    
     @Override
     public String toString() {
         return this.id + ":" + this.data;

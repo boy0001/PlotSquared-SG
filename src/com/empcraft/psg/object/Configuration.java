@@ -32,31 +32,31 @@ import org.bukkit.block.Biome;
  */
 @SuppressWarnings("unused")
 public class Configuration {
-
+    
     public static final SettingValue STRING = new SettingValue("STRING") {
         @Override
         public boolean validateValue(final String string) {
             return true;
         }
-
+        
         @Override
         public Object parseString(final String string) {
             return string;
         }
     };
-
+    
     public static final SettingValue STRINGLIST = new SettingValue("STRINGLIST") {
         @Override
         public boolean validateValue(final String string) {
             return true;
         }
-
+        
         @Override
         public Object parseString(final String string) {
             return string.split(",");
         }
     };
-
+    
     public static final SettingValue INTEGER = new SettingValue("INTEGER") {
         @Override
         public boolean validateValue(final String string) {
@@ -67,13 +67,13 @@ public class Configuration {
                 return false;
             }
         }
-
+        
         @Override
         public Object parseString(final String string) {
             return Integer.parseInt(string);
         }
     };
-
+    
     public static final SettingValue BOOLEAN = new SettingValue("BOOLEAN") {
         @Override
         public boolean validateValue(final String string) {
@@ -84,13 +84,13 @@ public class Configuration {
                 return false;
             }
         }
-
+        
         @Override
         public Object parseString(final String string) {
             return Boolean.parseBoolean(string);
         }
     };
-
+    
     public static final SettingValue DOUBLE = new SettingValue("DOUBLE") {
         @Override
         public boolean validateValue(final String string) {
@@ -101,13 +101,13 @@ public class Configuration {
                 return false;
             }
         }
-
+        
         @Override
         public Object parseString(final String string) {
             return Double.parseDouble(string);
         }
     };
-
+    
     public static final SettingValue BIOME = new SettingValue("BIOME") {
         @Override
         public boolean validateValue(final String string) {
@@ -118,7 +118,7 @@ public class Configuration {
                 return false;
             }
         }
-
+        
         @Override
         public Object parseString(final String string) {
             for (final Biome biome : Biome.values()) {
@@ -128,13 +128,13 @@ public class Configuration {
             }
             return Biome.FOREST;
         }
-
+        
         @Override
         public Object parseObject(final Object object) {
             return (((Biome) object)).toString();
         }
     };
-
+    
     public static final SettingValue BLOCK = new SettingValue("BLOCK") {
         @Override
         public boolean validateValue(final String string) {
@@ -151,7 +151,7 @@ public class Configuration {
                 return false;
             }
         }
-
+        
         @Override
         public Object parseString(final String string) {
             if (string.contains(":")) {
@@ -161,7 +161,7 @@ public class Configuration {
                 return new PlotBlock(Short.parseShort(string), (byte) 0);
             }
         }
-
+        
         @Override
         public Object parseObject(final Object object) {
             return object;
@@ -190,12 +190,12 @@ public class Configuration {
                 return false;
             }
         }
-
+        
         @Override
         public Object parseString(final String string) {
             final String[] blocks = string.split(",");
             final ArrayList<PlotBlock> parsedvalues = new ArrayList<>();
-
+            
             final PlotBlock[] values = new PlotBlock[blocks.length];
             final int[] counts = new int[blocks.length];
             int min = 100;
@@ -228,23 +228,23 @@ public class Configuration {
                     parsedvalues.add(values[i]);
                 }
             }
-
+            
             return parsedvalues.toArray(new PlotBlock[parsedvalues.size()]);
         }
-
+        
         @Override
         public Object parseObject(final Object object) {
             return object;
         }
     };
-
+    
     public static int gcd(final int a, final int b) {
         if (b == 0) {
             return a;
         }
         return gcd(b, a % b);
     }
-
+    
     private static int gcd(final int[] a) {
         int result = a[0];
         for (int i = 1; i < a.length; i++) {
@@ -252,27 +252,27 @@ public class Configuration {
         }
         return result;
     }
-
+    
     /**
      * Create your own SettingValue object to make the management of plotworld configuration easier
      */
     public static abstract class SettingValue {
         private final String type;
-
+        
         public SettingValue(final String type) {
             this.type = type;
         }
-
+        
         public String getType() {
             return this.type;
         }
-
+        
         public Object parseObject(final Object object) {
             return object;
         }
-
+        
         public abstract Object parseString(final String string);
-
+        
         public abstract boolean validateValue(final String string);
     }
 }

@@ -57,7 +57,7 @@ import com.empcraft.psg.jnbt.Tag;
 public class SchematicHandler {
     public static Schematic getSchematic(final CompoundTag tag, final File file) {
         final Map<String, Tag> tagMap = tag.getValue();
-
+        
         byte[] addId = new byte[0];
         if (tagMap.containsKey("AddBlocks")) {
             addId = ByteArrayTag.class.cast(tagMap.get("AddBlocks")).getValue();
@@ -65,13 +65,13 @@ public class SchematicHandler {
         final short width = ShortTag.class.cast(tagMap.get("Width")).getValue();
         final short length = ShortTag.class.cast(tagMap.get("Length")).getValue();
         final short height = ShortTag.class.cast(tagMap.get("Height")).getValue();
-
+        
         final byte[] b = ByteArrayTag.class.cast(tagMap.get("Blocks")).getValue();
         final byte[] d = ByteArrayTag.class.cast(tagMap.get("Data")).getValue();
         final short[] blocks = new short[b.length];
-
+        
         final Dimension dimension = new Dimension(width, height, length);
-
+        
         for (int index = 0; index < b.length; index++) {
             if ((index >> 1) >= addId.length) { // No corresponding
                 // AddBlocks index
@@ -84,15 +84,15 @@ public class SchematicHandler {
                 }
             }
         }
-
+        
         final DataCollection[] collection = new DataCollection[b.length];
-
+        
         for (int x = 0; x < b.length; x++) {
             collection[x] = new DataCollection(blocks[x], d[x]);
         }
         return new Schematic(collection, dimension, file);
     }
-
+    
     /**
      * Get a schematic
      *
@@ -118,13 +118,13 @@ public class SchematicHandler {
             final CompoundTag tag = (CompoundTag) stream.readTag();
             stream.close();
             return getSchematic(tag, file);
-
+            
         } catch (final Exception e) {
             e.printStackTrace();
             return null;
         }
     }
-
+    
     /**
      * Saves a schematic to a file path
      *
@@ -152,7 +152,7 @@ public class SchematicHandler {
         }
         return true;
     }
-
+    
     @SuppressWarnings("deprecation")
     public static CompoundTag getCompoundTag(final World world, final Location pos1, final Location pos2) {
         // loading chunks
@@ -164,9 +164,9 @@ public class SchematicHandler {
                     final Chunk chunk = world.getChunkAt(i, j);
                     final boolean result = chunk.load(false);
                     if (!result) {
-
+                        
                         // Plot is not even generated
-
+                        
                         return null;
                     }
                 }
@@ -178,7 +178,7 @@ public class SchematicHandler {
         final int width = (pos2.getBlockX() - pos1.getBlockX()) + 1;
         final int height = (pos2.getBlockY() - pos1.getBlockY()) + 1;
         final int length = (pos2.getBlockZ() - pos1.getBlockZ()) + 1;
-
+        
         final HashMap<String, Tag> schematic = new HashMap<>();
         schematic.put("Width", new ShortTag("Width", (short) width));
         schematic.put("Length", new ShortTag("Length", (short) length));
@@ -193,37 +193,37 @@ public class SchematicHandler {
         final byte[] blocks = new byte[width * height * length];
         byte[] addBlocks = null;
         final byte[] blockData = new byte[width * height * length];
-
+        
         final int sx = pos1.getBlockX();
         pos2.getBlockX();
-
+        
         final int sz = pos1.getBlockZ();
         pos2.getBlockZ();
-
+        
         final int sy = pos1.getBlockY();
         pos2.getBlockY();
-
+        
         for (int x = 0; x < width; x++) {
             for (int z = 0; z < length; z++) {
                 for (int y = 0; y < height; y++) {
                     final int index = (y * width * length) + (z * width) + x;
-
+                    
                     final Block block = world.getBlockAt(new Location(world, sx + x, sy + y, sz + z));
-
+                    
                     @SuppressWarnings("deprecation")
                     final int id2 = block.getTypeId();
-
+                    
                     if (id2 > 255) {
                         if (addBlocks == null) {
                             addBlocks = new byte[(blocks.length >> 1) + 1];
                         }
-
+                        
                         addBlocks[index >> 1] = (byte) (((index & 1) == 0) ? (addBlocks[index >> 1] & 0xF0) | ((id2 >> 8) & 0xF) : (addBlocks[index >> 1] & 0xF) | (((id2 >> 8) & 0xF) << 4));
                     }
-
+                    
                     blocks[index] = (byte) id2;
                     blockData[index] = block.getData();
-
+                    
                     // We need worldedit to save tileentity data or entities
                     // - it uses NMS and CB internal code, which changes every
                     // update
@@ -234,14 +234,14 @@ public class SchematicHandler {
         schematic.put("Data", new ByteArrayTag("Data", blockData));
         schematic.put("Entities", new ListTag("Entities", CompoundTag.class, new ArrayList<Tag>()));
         schematic.put("TileEntities", new ListTag("TileEntities", CompoundTag.class, new ArrayList<Tag>()));
-
+        
         if (addBlocks != null) {
             schematic.put("AddBlocks", new ByteArrayTag("AddBlocks", addBlocks));
         }
-
+        
         return new CompoundTag("Schematic", schematic);
     }
-
+    
     /**
      * Schematic Class
      *
@@ -251,26 +251,26 @@ public class SchematicHandler {
         private final DataCollection[] blockCollection;
         private final Dimension schematicDimension;
         private final File file;
-
+        
         public Schematic(final DataCollection[] blockCollection, final Dimension schematicDimension, final File file) {
             this.blockCollection = blockCollection;
             this.schematicDimension = schematicDimension;
             this.file = file;
         }
-
+        
         public File getFile() {
             return this.file;
         }
-
+        
         public Dimension getSchematicDimension() {
             return this.schematicDimension;
         }
-
+        
         public DataCollection[] getBlockCollection() {
             return this.blockCollection;
         }
     }
-
+    
     /**
      * Schematic Dimensions
      *
@@ -280,26 +280,26 @@ public class SchematicHandler {
         private final int x;
         private final int y;
         private final int z;
-
+        
         public Dimension(final int x, final int y, final int z) {
             this.x = x;
             this.y = y;
             this.z = z;
         }
-
+        
         public int getX() {
             return this.x;
         }
-
+        
         public int getY() {
             return this.y;
         }
-
+        
         public int getZ() {
             return this.z;
         }
     }
-
+    
     /**
      * Schematic Data Collection
      *
@@ -308,18 +308,18 @@ public class SchematicHandler {
     public static class DataCollection {
         private final short block;
         private final byte data;
-
+        
         // public CompoundTag tag;
-
+        
         public DataCollection(final short block, final byte data) {
             this.block = block;
             this.data = data;
         }
-
+        
         public short getBlock() {
             return this.block;
         }
-
+        
         public byte getData() {
             return this.data;
         }

@@ -5,13 +5,13 @@ import java.util.HashMap;
 import org.bukkit.configuration.ConfigurationSection;
 
 public abstract class PlotWorld {
-
+    
     public final String worldname;
-
+    
     public PlotWorld(final String worldname) {
         this.worldname = worldname;
     }
-
+    
     /**
      * When a world is created, the following method will be called for each
      *
@@ -20,9 +20,9 @@ public abstract class PlotWorld {
     public void loadDefaultConfiguration(final ConfigurationSection config) {
         loadConfiguration(config);
     }
-
+    
     public abstract void loadConfiguration(final ConfigurationSection config);
-
+    
     /**
      * Saving core plotworld settings
      *
@@ -44,7 +44,7 @@ public abstract class PlotWorld {
             }
         }
     }
-
+    
     /**
      * Used for the <b>/plot setup</b> command Return null if you do not want to support this feature
      *

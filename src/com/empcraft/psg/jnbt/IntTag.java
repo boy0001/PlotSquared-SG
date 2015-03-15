@@ -4,9 +4,9 @@ package com.empcraft.psg.jnbt;
  * The {@code TAG_Int} tag.
  */
 public final class IntTag extends Tag {
-
+    
     private final int value;
-
+    
     /**
      * Creates the tag with an empty name.
      *
@@ -16,7 +16,7 @@ public final class IntTag extends Tag {
         super();
         this.value = value;
     }
-
+    
     /**
      * Creates the tag.
      *
@@ -27,12 +27,12 @@ public final class IntTag extends Tag {
         super(name);
         this.value = value;
     }
-
+    
     @Override
     public Integer getValue() {
         return this.value;
     }
-
+    
     @Override
     public String toString() {
         final String name = getName();
@@ -42,5 +42,5 @@ public final class IntTag extends Tag {
         }
         return "TAG_Int" + append + ": " + this.value;
     }
-
+    
 }
