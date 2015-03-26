@@ -592,13 +592,6 @@ public class PlotMeManager implements IPlotMe_GeneratorManager {
     }
     
     @Override
-    public void removeAuctionDisplay(final IWorld iworld, final PlotId id) {
-        final ILocation loc = getSignLocation(iworld, id);
-        final IBlock b = loc.add(-1, 0, 1).getBlock();
-        b.setTypeId(0, false);
-    }
-    
-    @Override
     public void removeOwnerDisplay(final IWorld iworld, final PlotId id) {
         final ILocation loc = getSignLocation(iworld, id);
         final IBlock b = loc.add(0, 0, -1).getBlock();
